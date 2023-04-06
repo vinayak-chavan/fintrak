@@ -1,7 +1,8 @@
+const dotenv = require('dotenv');
+dotenv.config();
 require('./src/db/connection');
 const path = require('path');
 const express = require('express');
-const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const cron = require('node-cron');
 const { cronFunction } = require('./src/utils/cron');
@@ -12,7 +13,6 @@ const expenseRoutes = require('./src/routes/expense');
 const app = express();
 const port = process.env.PORT || 8000;
 
-dotenv.config();
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/src/public'));
 app.use(express.json());
