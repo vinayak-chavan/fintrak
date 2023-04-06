@@ -14,7 +14,6 @@ Once you clone or download project go into you folder
 ```
 > node seeder.js
 ```
-
 ### Run project
 ```
 > node index.js

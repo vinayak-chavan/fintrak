@@ -1,9 +1,12 @@
 const mongoose = require('mongoose');
 
+// "mongodb://localhost:27017/fintrak?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false",
+// "mongodb+srv://chavanvinayak017:<SmTR4b6uEVR0J0VA>@cluster1.ayoljo2.mongodb.net/?retryWrites=true&w=majority"
+
 (async () => {
   try {
     await mongoose.connect(
-      "mongodb://localhost:27017/fintrak?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false",
+      "mongodb+srv://chavanvinayak017:<SmTR4b6uEVR0J0VA>@cluster1.ayoljo2.mongodb.net/?retryWrites=true&w=majority",
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
