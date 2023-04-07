@@ -4,10 +4,23 @@ const user = require('../models/user');
 const reminder = require('../models/reminder');
 const { successResponse, errorResponse } = require('../utils');
 
+function fetchName (uName)  {
+  let username;
+  if(uName.includes(" ") === true){
+    let array = uName.split(' ');
+    username = array[0];
+  } else {
+    username = uName;
+  }
+  return username;
+}
+
 // user
 const home = async (req, res) => {
   try {
 
+    let username = fetchName(req.user.userName);
+    
     //pie chart
     const userId = req.user._id;
     const expenseData = await expense.find({userId: userId});
@@ -76,60 +89,8 @@ const home = async (req, res) => {
     finalArray.push(expensesArray);
     console.log(finalArray);
     // res.render("home", { expenses1: obj2 });
-    res.render("home", { expenses: finalArray });
+    res.render("home", { expenses: finalArray, username: username });
   } catch (error) {
-    return errorResponse(req, res, 'something went wrong', 400, { err: error });
-  }
-};
-
-const monthlyChart = async (req, res) => {
-  try {
-    const userId = req.user._id;
-    const array = await expense.find({userId: userId});
-
-    let flags = [], output = [], l = array.length, i;
-    for( i=0; i<l; i++) {
-
-      if( flags[array[i].date.getMonth()+1]) { 
-          for(let j=0; j< output.length; j++){
-              if(output[j].date.getMonth()+1 === array[i].date.getMonth()+1) {
-                  output[j].amount = output[j].amount + array[i].amount;
-              }
-          }
-          continue;
-      }
-      flags[array[i].date.getMonth()+1] = true;
-      array[i].month = (array[i].date.getMonth())+1;
-      output.push(array[i]);
-    }
-    
-    output.sort((a, b) => {
-      return a.month - b.month;
-    });
-
-    let expenses = [];
-    output.forEach(element => {
-      let temp = [];
-      if(element.month == 1) temp.push("January");
-      if(element.month == 2) temp.push("February");
-      if(element.month == 3) temp.push("March");
-      if(element.month == 4) temp.push("April");
-      if(element.month == 5) temp.push("May");
-      if(element.month == 6) temp.push("June");
-      if(element.month == 7) temp.push("July");
-      if(element.month == 8) temp.push("August");
-      if(element.month == 9) temp.push("September");
-      if(element.month == 10) temp.push("October");
-      if(element.month == 11) temp.push("November");
-      if(element.month == 12) temp.push("December");
-      temp.push((element.amount).toString());
-      expenses.push(temp);
-    });
-
-    console.log(expenses);
-    res.render("monthlyChart", { expenses: expenses });
-  } catch (error) {
-    console.log(error.message);
     return errorResponse(req, res, 'something went wrong', 400, { err: error });
   }
 };
@@ -137,8 +98,9 @@ const monthlyChart = async (req, res) => {
 const viewMyExpense = async (req, res) => {
   try {
     let userId = req.user._id;
+    let username = fetchName(req.user.userName);
     const expenseData = await expense.find({userId: userId});
-    res.render("viewMyExpense", { expenses: expenseData });
+    res.render("viewMyExpense", { expenses: expenseData, username: username });
   } catch (error) {
     return errorResponse(req, res, 'something went wrong', 400, { err: error });
   }
@@ -147,8 +109,9 @@ const viewMyExpense = async (req, res) => {
 const addCategoryView = async (req, res) => {
   try { 
       let userId = req.user._id;
+      let username = fetchName(req.user.userName);
       const categoryData = await category.find({$or: [{ userId: userId }, { isCommon: true }]});
-      res.render("addCategory", {categories: categoryData});
+      res.render("addCategory", {categories: categoryData, username: username});
     } catch (error) {
     console.log(error.message);
     return errorResponse(req, res, 'something went wrong', 500, { err: error });
@@ -158,9 +121,9 @@ const addCategoryView = async (req, res) => {
 const addExpenseView = async (req, res) => {
   try { 
       let userId = req.user._id;
-      console.log(userId);
+      let username = fetchName(req.user.userName);
       const categoryData = await category.find({$or: [{ userId: userId }, { isCommon: true }]});
-      res.render("addExpense", {categories: categoryData});
+      res.render("addExpense", {categories: categoryData, username: username});
     } catch (error) {
     console.log(error.message);
     return errorResponse(req, res, 'something went wrong', 500, { err: error });
@@ -322,7 +285,8 @@ const cancelExpense = async(req, res) => {
  
 const addReminderView = async(req, res) => {
   try {
-    res.render('addReminderView');
+    let username = fetchName(req.user.userName);
+    res.render('addReminderView', {username: username});
   } catch(error) {
     console.log(error.message);
   }
@@ -357,8 +321,11 @@ const addReminder = async(req, res) => {
 const viewAllReminders = async(req, res) => {
   try {
     let userId = req.user._id;
+    
+    let username = fetchName(req.user.userName);
+
     const reminderData = await reminder.find({userId: userId});
-    res.render("viewMyReminder", { reminders: reminderData });
+    res.render("viewMyReminder", { reminders: reminderData, username: username });
   } catch (error) {
     return errorResponse(req, res, 'something went wrong', 400, { err: error });
   }
@@ -382,8 +349,7 @@ module.exports = {
   viewAllReminders,
   deleteReminder, 
   home, 
-  addCategory,
-  monthlyChart, 
+  addCategory, 
   viewMyExpense, 
   addExpense, 
   addExpenseView, 

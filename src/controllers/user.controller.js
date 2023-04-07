@@ -4,13 +4,24 @@ const { successResponse, errorResponse } = require("../utils");
 const { sendmail } = require('../utils/mail');
 const secretKey = 'Secret';
 
+function fetchName (uName)  {
+  let username;
+  if(uName.includes(" ") === true){
+    let array = uName.split(' ');
+    username = array[0];
+  } else {
+    username = uName;
+  }
+  return username;
+}
+
 const login = async (req, res) => {
   try {
     const emailID = req.body.emailID;
     const password = req.body.password;
     let message;
     // check for email exist or not
-    const userData = await user.findOne({ emailID: emailID });
+    const userData = await user.findOne({ emailID: emailID, isVerified: true });
     if (!userData) {
       message = 'Email id is not registered';
       console.log(message);
@@ -21,7 +32,7 @@ const login = async (req, res) => {
       const isMatch = await bcrypt.compare(password, userData.password);
 
       if (!isMatch) {
-        message = 'Email id is not registered';
+        message = 'Password is wrong';
         console.log(message);
         res.render("login", {message: message});
 
@@ -38,7 +49,10 @@ const login = async (req, res) => {
         if (userData.role === "admin")      
           res.redirect("/expenses");
         else
-          res.redirect("/home");
+          if(userData.address == '')
+            res.redirect("/profile");
+          else
+            res.redirect("/home");
       }
    }
   } catch (error) {
@@ -109,9 +123,10 @@ const loginView = async (req, res) => {
 const viewProfile = async (req, res) => {
   try {
     const id = req.user._id;
+    let username = fetchName(req.user.userName);
     console.log(id);  
     let userData = await user.findOne({ _id: id });
-    res.render("userProfile", { users: userData });
+    res.render("userProfile", { users: userData, username: username });
   } catch (error) {
     return errorResponse(req, res, "something went wrong", 400);
   }
@@ -125,6 +140,13 @@ const updateProfile = async (req, res) => {
     const updateDetails = await user.findByIdAndUpdate(userId, {
       userName : req.body.userName,
       emailID : req.body.emailID,
+      address : req.body.address,
+      city : req.body.city,
+      state : req.body.state,
+      country : req.body.country,
+      pincode : req.body.pincode,
+      companyName : req.body.companyName,
+      employeeID : req.body.employeeID,
     });
     
     const userData = await user.findOne({ _id: userId });
@@ -149,7 +171,7 @@ const logout = async (req, res) => {
 };
 
 const addAdminView = async (req, res) => {
-  res.render("addAdmin");
+  res.render("addAdmins");
 }
 
 const viewAllAdmins = async (req, res) => {

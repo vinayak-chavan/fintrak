@@ -3,7 +3,13 @@
 <head>
     <link rel="stylesheet" href="/css/blogcss.css" />
     <%- include('../views/partials/links'); %>  
-   
+
+    <script type="text/javascript">
+        function alertFun() {
+            alert('Profile updated successfully.');
+        }
+    </script>
+
 </head>
 
 <body>
@@ -35,6 +41,10 @@
                 <li class="nav-item px-2">
                     <a href="/logout" class="nav-link text-white"> LOGOUT </a>
                 </li>
+                <li class="nav-item px-4">
+                    <b> <a class="nav-link text-white"> <i class="fa fa-user" style="font-size:20px;"></i>&nbsp;<%= username %> </a>
+                    </b>
+                </li>
             </ul>
         </div>
     </div>
@@ -43,22 +53,59 @@
 
                     <!-- page content -->
 
-          <div class="container mt-5">
+          <div class="container">
             <div class="d-flex justify-content-center">
-                <form class="col-md-6 mt-5" id="profile" action="/profile %>" method="post">
+                <form class="col-md-6 mt-4" id="profile" action="/profile %>" method="post">
 
                     <div class="form-group">
                         <label for="username">Name</label>
-                        <input type="text" class="form-control" id="userName" name="userName" value="<%= users.userName %>" required>
+                        <input type="text" class="form-control" id="userName" name="userName" value="<%= users.userName %>" required placeholder="Name">
                     </div>
                    
                     <div class="form-group">
                         <label for="emailID">Email ID</label>
-                        <input type="text" class="form-control" id="emailID" name="emailID" value="<%= users.emailID %>" required>
+                        <input type="text" class="form-control" id="emailID" name="emailID" value="<%= users.emailID %>" disabled placeholder="City">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" class="form-control" id="address" name="address" value="<%= users.address %>" required placeholder="Address">
+                    </div>
+
+                    <div class="row mx-md-n2">
+                        <div class="col px-md-2">
+                            <label for="city">City</label>
+                            <input type="text" class="form-control" id="city" name="city" value="<%= users.city %>" required placeholder="City">
+                        </div>
+                        <div class="col px-2">
+                            <label for="state">State</label>
+                            <input type="text" class="form-control" id="state" name="state" value="<%= users.state %>" required placeholder="State">
+                        </div>
+                    </div>
+
+                    <div class="row mx-md-n2">
+                        <div class="col px-md-2">
+                            <label for="country">Country</label>
+                            <input type="text" class="form-control" id="country" name="country" value="<%= users.country %>" required placeholder="Country">
+                        </div>
+                        <div class="col px-2">
+                            <label for="pincode">Pincode</label>
+                            <input type="text" class="form-control" id="pincode" name="pincode" value="<%= users.pincode %>" required placeholder="Pincode">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="companyName">Company Name</label>
+                        <input type="text" class="form-control" id="companyName" name="companyName" value="<%= users.companyName %>" required placeholder="Company Name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="employeeID">Employee ID</label>
+                        <input type="text" class="form-control" id="employeeID" name="employeeID" value="<%= users.employeeID %>" required placeholder="Employee ID" >
                     </div>
 
                     <div class="form-group"></div>
-                    <input type="submit" class="btn btn-primary btn-info mt-2" value="UPDATE">
+                    <input type="submit" class="btn btn-primary btn-info mt-2" value="UPDATE" onclick="alertFun()">
 
                     </div>
                 </form>

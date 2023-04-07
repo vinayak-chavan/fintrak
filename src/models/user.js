@@ -28,6 +28,42 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  address: {
+    type: String,
+    default: '',
+    trim: true,
+  },
+  city: {
+    type: String,
+    default: '',
+    trim: true,
+  },
+  state: {
+    type: String,
+    default: '',
+    trim: true,
+  },
+  country: {
+    type: String,
+    default: '',
+    trim: true,
+  },
+  pincode: {
+    type: String,
+    default: '',
+    trim: true,
+  },
+  companyName: {
+    type: String,
+    default: '',
+    trim: true,
+  },
+  employeeID: {
+    type: String,
+    default: '',
+    trim: true,
+  },
+
 });
 
 userSchema.methods.getToken = function ({ exp, secret }) {

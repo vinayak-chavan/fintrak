@@ -45,11 +45,11 @@
             <div class="collapse navbar-collapse text-center" id="collapsenavbar">
               <ul class="navbar-nav ml-auto">
                 <li class="nav-item px-4">
-                  <button type="button" class="btn btn-secondary p-0"><a href="/expense" class="nav-link text-white"> Approved
+                  <button type="button" class="btn btn-secondary p-0"><a href="/approved" class="nav-link text-white"> Approved
                        </a></button>
                 </li>
                 <li class="nav-item px-4">
-                  <button type="button" class="btn btn-secondary p-0"><a href="/category" class="nav-link text-white"> Canceled
+                  <button type="button" class="btn btn-secondary p-0"><a href="/canceled" class="nav-link text-white"> Canceled
                     </a></button>
                 </li>
               </ul>
@@ -60,8 +60,8 @@
   <!-- page content -->
 
   <% function formatDate(dateObject) { let d=new Date(dateObject); let day=d.getDate(); let month=d.getMonth() + 1; let
-    year=d.getFullYear(); if (day < 10) { day="0" + day; } if (month < 10) { month="0" + month; } let date=day + "-" +
-    month + "-" + year; return date; }; %>
+    year=d.getFullYear(); if (day < 10) { day="0" + day; } if (month < 10) { month="0" + month; } let date=month + "-" +
+    day + "-" + year; return date; }; %>
 
     <section class="pt-3 justify-content-center position-relative ">
 

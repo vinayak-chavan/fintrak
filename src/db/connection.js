@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 // let url = "mongodb://localhost:27017/fintrak?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false";
 let url = "mongodb+srv://chavanvinayak017:SmTR4b6uEVR0J0VA@cluster1.ayoljo2.mongodb.net/?retryWrites=true&w=majority";
+
 try{
   mongoose.set("strictQuery", false);
 

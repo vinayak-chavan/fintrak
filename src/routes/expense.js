@@ -15,7 +15,6 @@ const {
   approveExpense, 
   cancelExpense,
   home,
-  monthlyChart,
   addReminderView,
   addReminder,
   viewAllReminders,
@@ -27,7 +26,6 @@ const {
 const route = express.Router();
 
 route.get('/home', auth, home);
-route.get('/chart', auth, monthlyChart);
 route.get('/myexpense', auth, viewMyExpense);
 route.get('/expense', auth, addExpenseView);
 route.post('/expense', auth, addExpense);
