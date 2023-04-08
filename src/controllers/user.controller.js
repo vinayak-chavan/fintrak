@@ -238,6 +238,50 @@ const addAdmin = async (req, res) => {
   }
 };
 
+const sendLink = async (req, res) => {
+  try{
+    const link = process.env.LINK;
+    const emailID = req.body.emailID;
+    const userData = await user.findOne({ emailID: emailID, isVerified: true });
+    if(userData) {
+      sendmail(
+        userData.emailID,
+        "Foget password link in fintrak",
+        ` <p> Hello </p><strong> ${userData.userName}, </strong> </br>
+          <p> To change password <a href="${link}/change/${userData.emailID}">click here</a></p>
+          <p> Thank You!!</p>`
+      );
+    }
+  } catch(err){
+    console.log(err.message);
+  }
+}
+
+const forgetView = async (req, res) => {
+  res.render('forgetPage');
+}
+
+const changePasswordView = async (req, res) => {
+  const emailID = req.params.emailID;
+  res.render("changePassword", {emailID: emailID});
+}
+
+const changePassword = async (req, res) => {
+  try{
+    console.log(req.body);
+    const emailID = req.body.emailID;
+    const userData = await user.findOne({ emailID: emailID });
+    console.log(userData);
+    const updateDetails = await user.findByIdAndUpdate(userData._id, {
+      password : req.body.password,
+    });
+    res.render("login", {message: 'Password changed successfully'});
+  } catch(err){
+    console.log(err.message);
+    res.render("login", {message: 'Password has not been updated'});
+  }
+}
+
 module.exports = {
   login,
   register,
@@ -250,4 +294,8 @@ module.exports = {
   addAdminView,
   deleteAdmin,
   viewAllAdmins,
+  forgetView,
+  sendLink,
+  changePassword,
+  changePasswordView,
 };

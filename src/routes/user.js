@@ -12,6 +12,10 @@ const {
   addAdminView,
   deleteAdmin,
   viewAllAdmins,
+  forgetView,
+  sendLink,
+  changePassword,
+  changePasswordView,
 } = require("../controllers/user.controller");
 
 const route = express.Router();
@@ -25,7 +29,11 @@ route.post('/profile', auth, updateProfile);
 route.get('/verification/:emailID', verification);
 route.post('/admin', addAdmin);
 route.get('/delete/:id', auth, deleteAdmin);
-route.get('/admin', addAdminView);
-route.get('/alladmin', viewAllAdmins);
+route.get('/admin', auth, addAdminView);
+route.get('/alladmin', auth, viewAllAdmins);
+route.get('/forget', forgetView);
+route.post('/forget', sendLink);
+route.get('/change/:emailID', changePasswordView);
+route.post('/change', changePassword);
 
 module.exports = route;
