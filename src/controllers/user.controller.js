@@ -268,12 +268,12 @@ const changePasswordView = async (req, res) => {
 
 const changePassword = async (req, res) => {
   try{
-    console.log(req.body);
     const emailID = req.body.emailID;
+    let password = await bcrypt.hash(req.body.password, 10);
     const userData = await user.findOne({ emailID: emailID });
     console.log(userData);
     const updateDetails = await user.findByIdAndUpdate(userData._id, {
-      password : req.body.password,
+      password : password,
     });
     res.render("login", {message: 'Password changed successfully'});
   } catch(err){
